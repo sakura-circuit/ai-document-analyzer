@@ -330,21 +330,11 @@ Suitable for portfolios targeting:
 
 ### Swagger UI Example
 
-Add a screenshot here:
+Screenshots:
 
-```text
-docs/swagger-example.png
-```
-
-Example:
-
-```markdown
 ![Swagger Example](docs/swagger-question-example.png)
-```
 
-```markdown
 ![Swagger Example](docs/swagger-example.png)
-```
 
 ---
 

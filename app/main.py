@@ -1,3 +1,5 @@
+from app import config
+
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
@@ -13,6 +15,8 @@ from app.chunker import split_text
 from app.embedding_service import create_embeddings, create_query_embedding
 
 from app.vector_store import store_document, search
+
+from app.gemini_provider import answer_question
 
 app = FastAPI()
 
@@ -39,6 +43,10 @@ async def upload_document(file: UploadFile = File(...)):
 
         chunks = split_text(text)
 
+        for i, chunk in enumerate(chunks):
+            print(f"\n=== CHUNK {i} ===")
+            print(chunk[:200])
+
         embeddings = create_embeddings(chunks)
 
         store_document(chunks, embeddings)
@@ -57,6 +65,10 @@ async def upload_document(file: UploadFile = File(...)):
 def ask_question(request: QuestionRequest):
     query_embedding = create_query_embedding(request.question)
 
-    best_chunk = search(query_embedding)
+    best_chunk, confidence = search(query_embedding)
 
-    return QuestionResponse(answer=best_chunk)
+    answer = answer_question(request.question, best_chunk)
+
+    return QuestionResponse(
+        answer=answer, source_chunk=best_chunk, confidence=round(confidence, 3)
+    )

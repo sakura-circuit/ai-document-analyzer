@@ -1,15 +1,26 @@
-def split_text(text: str, chunk_size: int = 500) -> list[str]:
+def split_text(text: str, chunk_size: int = 800) -> list[str]:
 
     chunks = []
 
-    start = 0
+    current_chunk = ""
 
-    while start < len(text):
+    for line in text.splitlines():
 
-        end = start + chunk_size
+        line = line.strip()
 
-        chunks.append(text[start:end])
+        if not line:
+            continue
 
-        start = end
+        if len(current_chunk) + len(line) > chunk_size:
+            chunks.append(current_chunk)
+
+            current_chunk = line
+
+        else:
+            current_chunk += "\n" + line
+
+    if current_chunk:
+
+        chunks.append(current_chunk)
 
     return chunks

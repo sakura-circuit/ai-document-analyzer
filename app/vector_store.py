@@ -27,4 +27,8 @@ def search(query_embedding, top_k: int = 1):
 
     best_index = int(np.argmax(similarities))
 
-    return DOCUMENT_CHUNKS[best_index]
+    best_chunk = DOCUMENT_CHUNKS[best_index]
+
+    confidence = float(similarities[best_index])
+
+    return (best_chunk, confidence)

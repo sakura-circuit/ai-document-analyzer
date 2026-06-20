@@ -12,3 +12,5 @@ class QuestionRequest(BaseModel):
 
 class QuestionResponse(BaseModel):
     answer: str
+    source_chunk: str
+    confidence: float
